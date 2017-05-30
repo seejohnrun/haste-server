@@ -258,13 +258,22 @@ haste.prototype.lockDocument = function() {
 
 haste.prototype.configureButtons = function() {
   var _this = this;
+  var includeAlt = navigator.appVersion.indexOf("Mac")!== -1;
+
+  function isShortcutFor(evt, keycode) {
+    return evt.ctrlKey && evt.keyCode === keycode && (!includeAlt || evt.altKey);
+  };
+  function shortcutDescFor(letter) {
+    return includeAlt ? 'control + ' + letter : 'control + alt + ' + letter;
+  };
+
   this.buttons = [
     {
       $where: $('#box2 .save'),
       label: 'Save',
-      shortcutDescription: 'control + s',
+      shortcutDescription: shortcutDescFor('s'),
       shortcut: function(evt) {
-        return evt.ctrlKey && (evt.keyCode === 83);
+        return isShortcutFor(evt, 83);
       },
       action: function() {
         if (_this.$textarea.val().replace(/^\s+|\s+$/g, '') !== '') {
@@ -276,9 +285,9 @@ haste.prototype.configureButtons = function() {
       $where: $('#box2 .new'),
       label: 'New',
       shortcut: function(evt) {
-        return evt.ctrlKey && evt.keyCode === 78  
+        return isShortcutFor(evt, 78);
       },
-      shortcutDescription: 'control + n',
+      shortcutDescription: shortcutDescFor('n'),
       action: function() {
         _this.newDocument(!_this.doc.key);
       }
@@ -287,9 +296,9 @@ haste.prototype.configureButtons = function() {
       $where: $('#box2 .duplicate'),
       label: 'Duplicate & Edit',
       shortcut: function(evt) {
-        return _this.doc.locked && evt.ctrlKey && evt.keyCode === 68;
+        return isShortcutFor(evt, 68);
       },
-      shortcutDescription: 'control + d',
+      shortcutDescription: shortcutDescFor('d'),
       action: function() {
         _this.duplicateDocument();
       }
@@ -393,5 +402,4 @@ $(function() {
       }
     }
   });
-
 });
