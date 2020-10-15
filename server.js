@@ -107,6 +107,12 @@ if (config.rateLimits) {
   app.use(connect_rate_limit(config.rateLimits));
 }
 
+// Allow CORS from everywhere
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 // first look at API calls
 app.use(route(function(router) {
   // get raw documents - support getting with extension
