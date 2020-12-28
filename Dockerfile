@@ -1,4 +1,4 @@
-FROM node:14.8.0-stretch
+FROM node:latest
 
 RUN mkdir -p /usr/src/app && \
     chown node:node /usr/src/app
