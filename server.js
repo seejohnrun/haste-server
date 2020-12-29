@@ -16,6 +16,10 @@ const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 config.port = process.env.PORT || config.port || 7777;
 config.host = process.env.HOST || config.host || 'localhost';
 
+if (config.useDotenv) {
+    require('dotenv').config();
+}
+
 // Set up the logger
 if (config.logging) {
   try {
@@ -43,6 +47,10 @@ if (!config.storage.type) {
 }
 
 var Store, preferredStore;
+
+if (config.useDotenv) {
+  config.storage.password = process.env.STORAGE_PASSWORD;
+}
 
 if (process.env.REDISTOGO_URL && config.storage.type === 'redis') {
   var redisClient = require('redis-url').connect(process.env.REDISTOGO_URL);
