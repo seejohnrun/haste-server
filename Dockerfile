@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:15
 
 RUN mkdir -p /usr/src/app && \
     chown node:node /usr/src/app
